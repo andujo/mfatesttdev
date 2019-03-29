@@ -48,39 +48,42 @@ namespace DatingApp.API.Controllers
         { 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
-            if (userFromRepo == null)
-                return Unauthorized();
+            if (true) { // valid mfa
+                var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
+                if (userFromRepo == null)
+                    return Unauthorized();
 
-            //build token, it will contains user name
-            var claims = new[]
-            {
-                    new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                    new Claim(ClaimTypes.Name, userFromRepo.UserName)
-            };
+                //build token, it will contains user name
+                var claims = new[]
+                {
+                        new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
+                        new Claim(ClaimTypes.Name, userFromRepo.UserName)
+                };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(_config.GetSection("AppSettings:Token").Value));
+                var key = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(_config.GetSection("AppSettings:Token").Value));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddDays(1),
+                    SigningCredentials = creds
+                };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenHandler = new JwtSecurityTokenHandler();
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var user = _mapper.Map<UserForListDto>(userFromRepo);
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var user = _mapper.Map<UserForListDto>(userFromRepo);
 
-            return Ok(new
-            {
-                token = tokenHandler.WriteToken(token),
-                user
-            });
+                return Ok(new
+                {
+                    token = tokenHandler.WriteToken(token),
+                    user
+                });
+            } else
+                return BadRequest(ModelState);
         }
     }
 }

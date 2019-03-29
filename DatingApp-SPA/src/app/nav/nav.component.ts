@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { AlertifyService } from '../_services/alertify.service';
 import { Router } from '@angular/router';
@@ -8,12 +8,12 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+    styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
 model: any = {};
 photoUrl: string;
-modalRef: BsModalRef;
+bsModalRef : BsModalRef;
 
   constructor(public authService: AuthService,
   private alertify: AlertifyService,
@@ -26,18 +26,17 @@ modalRef: BsModalRef;
 
 
   login() {
-    //this.usrName = this.model.username;
     const initialState = {
-      list: [
-        'Open a modal with component',
-        'Pass your data',
-        'Do something else',
-        '...'
-      ],
-      title: 'Modal with component'
+    list: [
+      'Open a modal with component',
+      'Pass your data',
+      'Do something else',
+      '...'
+    ],
+    title: 'Modal with component'
     };
-    //console.log(this.usrName);
-    this.modalService.show(ModalMFAComponent, {initialState});
+    this.bsModalRef  = this.modalService.show(ModalMFAComponent, {initialState});
+    this.bsModalRef .content.closeBtnName = 'Close';
     // var typeNumber = 4
     //     var errorCorrectionLevel = 'L'
     //     var qr = qrcode(typeNumber, errorCorrectionLevel)
@@ -70,6 +69,7 @@ modalRef: BsModalRef;
   }
 
 }
+
   /*
 
 import { TOTP } from 'jsotp'

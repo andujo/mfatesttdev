@@ -17,5 +17,21 @@
  Aceptar
 </b-btn>
 </div>
-</b-modal> -->
+</b-modal> 
 <button type="button" class="btn btn-primary" (click)="openModalWithComponent()">Create modal with component</button>
+<button type="button" class="btn btn-primary" (click)="openModal(template)">Create template modal</button>-->
+ 
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ul *ngIf="list.length">
+    <li *ngFor="let item of list">{{item}}</li>
+  </ul>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+</div>

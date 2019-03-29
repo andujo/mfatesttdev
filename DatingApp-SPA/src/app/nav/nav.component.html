@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
   <div class="container">
       <a class="navbar-brand" [routerLink]="['/home']">Dating App</a>
-      <app-modal-mfa [usrName]="model.username"></app-modal-mfa>
+      <!-- <app-modal-mfa [usrName]="model.username"></app-modal-mfa> -->
       <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
         <li class="nav-item" routerLinkActive="router-link-active">
           <a class="nav-link" [routerLink]="['/members']">Matches</a>
@@ -38,5 +38,4 @@
       </form>
 
   </div>
-  
 </nav>

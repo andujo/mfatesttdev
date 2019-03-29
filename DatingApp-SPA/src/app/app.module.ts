@@ -52,6 +52,9 @@ export function tokenGetter() {
       PhotoEditorComponent,
       ModalMFAComponent
    ],
+   entryComponents: [
+      ModalMFAComponent
+   ],
    imports: [
       BrowserModule,
       HttpClientModule,
