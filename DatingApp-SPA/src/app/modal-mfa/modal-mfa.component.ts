@@ -1,41 +1,36 @@
 import { Component, TemplateRef, Input, OnInit   } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
- 
+import { encode } from 'hi-base32';
+
 @Component({
   selector: 'app-modal-mfa',
   templateUrl: './modal-mfa.component.html',
     styleUrls: ['./modal-mfa.component.css']
 })
 export class ModalMFAComponent implements OnInit{
+  model: any = {};
+  public onClose: Subject<string>;
+  public usrQrCode: string = null;
   title: string;
   closeBtnName: string;
-  list: any[] = [];
- // @Input() userName: string;
-  //modalRef: BsModalRef | null;
-  //modalRef2: BsModalRef;
+  userName: string;
+
   constructor(private bsModalRef: BsModalRef) {}
   
   ngOnInit() {
-    this.list.push('PROFIT!!!');
+    this.onClose = new Subject();
+    this.usrQrCode = 'otpauth://totp/'+ this.userName+'?secret='+ encode(this.userName) +'&issuer=TiempoDev';
+    console.log(this.usrQrCode);
   }
-  /*
-  otpauth://totp/usuario@tiempodev.com?secret=JBSWY3DPEHPK3PXP&issuer=TiempoDev
-  */
 
-  /*
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+  public login(): void {
+    this.onClose.next(this.model.mfacode);
+    this.bsModalRef.hide();
+}
+
+  public cancel(): void {
+    this.onClose.next(null);
+    this.bsModalRef.hide();
   }
-  openModal2(template: TemplateRef<any>) {
-    this.modalRef2 = this.modalService.show(template);
-  }
-  closeFirstModal() {
-    if (!this.modalRef) {
-      return;
-    }
- 
-    this.modalRef.hide();
-    this.modalRef = null;
-  }
-  */
 }

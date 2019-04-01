@@ -19,6 +19,7 @@ bsModalRef : BsModalRef;
   private alertify: AlertifyService,
   private router: Router,
   private modalService: BsModalService) { }
+  private  mfacode: string;
 
   ngOnInit() {
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
@@ -26,33 +27,29 @@ bsModalRef : BsModalRef;
 
 
   login() {
+   
     const initialState = {
-    list: [
-      'Open a modal with component',
-      'Pass your data',
-      'Do something else',
-      '...'
-    ],
-    title: 'Modal with component'
+    userName : this.model.username,
+    title: 'QR Code'
     };
     this.bsModalRef  = this.modalService.show(ModalMFAComponent, {initialState});
     this.bsModalRef .content.closeBtnName = 'Close';
-    // var typeNumber = 4
-    //     var errorCorrectionLevel = 'L'
-    //     var qr = qrcode(typeNumber, errorCorrectionLevel)
-    //     qr.addData(this.urlCode2Factor)
-    //     qr.make()
-    //     document.getElementById('qrCode').innerHTML = qr.createImgTag(7)
-
-
-
-    // this.authService.login(this.model).subscribe(next => {
-    //   this.alertify.sueccess('Logged in Successfully');
-    // }, error => {
-    //   this.alertify.error(error);
-    // }, () => {
-    //   this.router.navigate(['/members']);
-    // });
+    this.bsModalRef.content.onClose.subscribe(result => {
+      this.mfacode = result;
+      if (!this.mfacode)
+      this.alertify.error("Invalid MFA Code");
+      else  
+      {
+        this.model.mfacode = this.mfacode;
+        this.authService.login(this.model).subscribe(next => {
+          this.alertify.sueccess('Logged in Successfully');
+        }, error => {
+          this.alertify.error(error);
+        }, () => {
+          this.router.navigate(['/members']);
+        });
+      }
+    })  
   }
 
   loggedIn() {

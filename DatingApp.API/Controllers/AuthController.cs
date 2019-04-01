@@ -19,6 +19,7 @@ namespace DatingApp.API.Controllers
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
+
         public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         { 
             _mapper = mapper;
@@ -47,8 +48,11 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
         { 
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            
 
-            if (true) { // valid mfa
+            var tfa = new TwoFactorAuthNet.TwoFactorAuth();
+            if (tfa.VerifyCode(Base32.Encode(Encoding.UTF8.GetBytes(userForLoginDto.UserName)), userForLoginDto.MfaCode)) {
+                return BadRequest("Success, check credentials in database");
                 var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
                 if (userFromRepo == null)
                     return Unauthorized();
@@ -83,7 +87,7 @@ namespace DatingApp.API.Controllers
                     user
                 });
             } else
-                return BadRequest(ModelState);
+                return BadRequest("MFA code is invalid");
         }
     }
 }

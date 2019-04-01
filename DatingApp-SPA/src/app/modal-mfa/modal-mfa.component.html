@@ -1,37 +1,18 @@
-<!-- <b-modal ref="modal2Factors" title="Autenticación segura" :no-close-on-backdrop="true">
-  <div class="form-group">
-    <label>Por favor, escanee el código con la aplicación segura</label>
-  </div>     
-  <div class="form-group">
-    <div class="qr" id="qrCode" @click="openGoAuth()"></div>
-  </div>
-  <div class="form-group">
-    <label>Código:</label>
-    <the-mask class="form-control input-lg text-centered" :mask="['### ###']" v-model="code2Factor"/>
-  </div>
-<div slot="modal-footer">
-<b-btn @click="cancel2Factor">
- Cancelar
-</b-btn>
-<b-btn variant="primary" @click="authentication2Factor">
- Aceptar
-</b-btn>
-</div>
-</b-modal> 
-<button type="button" class="btn btn-primary" (click)="openModalWithComponent()">Create modal with component</button>
-<button type="button" class="btn btn-primary" (click)="openModal(template)">Create template modal</button>-->
  
-<div class="modal-header">
+<div class="modal-header navbar-expand-md navbar-dark bg-primary">
   <h4 class="modal-title pull-left">{{title}}</h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-  <ul *ngIf="list.length">
-    <li *ngFor="let item of list">{{item}}</li>
-  </ul>
+  <qrcode [qrdata]="usrQrCode" [size]="256" [level]="'M'"></qrcode>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+    <form #codeForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
+        <input class="form-control mr-sm-2" type="text" name="username"
+        placeholder="MFA Code" required [(ngModel)]="model.mfacode">
+        <button [disabled]="!codeForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+      </form>
+  <button type="button" class="btn btn-success my-2 my-sm-0" (click)="cancel()">{{closeBtnName}}</button>
 </div>

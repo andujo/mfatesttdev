@@ -13,7 +13,7 @@ namespace DatingApp.API.Dtos
         public string Password { get; set; }
 
         [Required]
-        [StringLength(6, MinimumLength = 6, ErrorMessage = "You must specify code of 6 characters")]
+        [StringLength(6, MinimumLength = 6, ErrorMessage = "You must specify a code of 6 characters")]
         public string MfaCode { get; set; }
     }
 }
