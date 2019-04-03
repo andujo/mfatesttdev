@@ -1,7 +1,7 @@
  
 <div class="modal-header navbar-expand-md navbar-dark bg-primary">
   <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+  <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -14,5 +14,5 @@
         placeholder="MFA Code" required [(ngModel)]="model.mfacode">
         <button [disabled]="!codeForm.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
       </form>
-  <button type="button" class="btn btn-success my-2 my-sm-0" (click)="cancel()">{{closeBtnName}}</button>
+  <button type="button" class="btn btn-primary my-2 my-sm-0" (click)="cancel()">{{closeBtnName}}</button>
 </div>

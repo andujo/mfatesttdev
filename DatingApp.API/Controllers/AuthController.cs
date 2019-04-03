@@ -51,8 +51,8 @@ namespace DatingApp.API.Controllers
             
 
             var tfa = new TwoFactorAuthNet.TwoFactorAuth();
-            if (tfa.VerifyCode(Base32.Encode(Encoding.UTF8.GetBytes(userForLoginDto.UserName)), userForLoginDto.MfaCode)) {
-                return BadRequest("Success, check credentials in database");
+            if (tfa.VerifyCode(Base32.Encode(Encoding.UTF8.GetBytes(userForLoginDto.UserName)), userForLoginDto.MfaCode))
+            {
                 var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
                 if (userFromRepo == null)
                     return Unauthorized();
@@ -86,7 +86,8 @@ namespace DatingApp.API.Controllers
                     token = tokenHandler.WriteToken(token),
                     user
                 });
-            } else
+            } 
+            else
                 return BadRequest("MFA code is invalid");
         }
     }

@@ -8,7 +8,7 @@ import { encode } from 'hi-base32';
   templateUrl: './modal-mfa.component.html',
     styleUrls: ['./modal-mfa.component.css']
 })
-export class ModalMFAComponent implements OnInit{
+export class ModalMFAComponent implements OnInit {
   model: any = {};
   public onClose: Subject<string>;
   public usrQrCode: string = null;
@@ -17,11 +17,10 @@ export class ModalMFAComponent implements OnInit{
   userName: string;
 
   constructor(private bsModalRef: BsModalRef) {}
-  
+
   ngOnInit() {
     this.onClose = new Subject();
-    this.usrQrCode = 'otpauth://totp/'+ this.userName+'?secret='+ encode(this.userName) +'&issuer=TiempoDev';
-    console.log(this.usrQrCode);
+    this.usrQrCode = 'otpauth://totp/' + this.userName + '?secret=' + encode(this.userName) + '&issuer=TiempoDev';
   }
 
   public login(): void {
@@ -34,3 +33,4 @@ export class ModalMFAComponent implements OnInit{
     this.bsModalRef.hide();
   }
 }
+
