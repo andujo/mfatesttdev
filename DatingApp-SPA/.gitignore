@@ -8,6 +8,10 @@
 # dependencies
 /node_modules
 
+# code coverage
+/.scannerwork
+/coverage
+
 # IDEs and editors
 /.idea
 .project
