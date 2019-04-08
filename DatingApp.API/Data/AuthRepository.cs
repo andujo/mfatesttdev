@@ -1,10 +1,7 @@
-using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using DatingApp.API.DatingApp;
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DatingApp.API.Data
 {
@@ -30,9 +27,7 @@ namespace DatingApp.API.Data
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            var dd =  new System.Security.Cryptography.HMACSHA512(passwordSalt);
-            var ww = new System.Security.Cryptography.HMACSHA512(passwordHash);
-            using (System.Security.Cryptography.HMACSHA512 hmac = 
+            using (System.Security.Cryptography.HMACSHA512 hmac =
             new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -46,8 +41,7 @@ namespace DatingApp.API.Data
 
         async Task<User> IAuthRepository.Register(User user, string password)
         {
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             await _context.Users.AddAsync(user);
@@ -68,7 +62,7 @@ namespace DatingApp.API.Data
 
         async Task<bool> IAuthRepository.UserExists(string userName)
         {
-            return await _context.Users.AnyAsync(x=> x.UserName == userName);
+            return await _context.Users.AnyAsync(x => x.UserName == userName);
         }
     }
 }
