@@ -50,7 +50,7 @@ public static class Base32 {
         int buffer = 0;
         int next = 0;
         int bitsLeft = 0;
-        foreach (char c in encoded.ToCharArray()) {
+        foreach (char c in encoded) {
             if (!CHAR_MAP.ContainsKey(c)) {
                 throw new DecodingException("Illegal character: " + c);
             }

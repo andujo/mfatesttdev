@@ -30,8 +30,6 @@ namespace DatingApp.API.Data
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            var dd =  new System.Security.Cryptography.HMACSHA512(passwordSalt);
-            var ww = new System.Security.Cryptography.HMACSHA512(passwordHash);
             using (System.Security.Cryptography.HMACSHA512 hmac = 
             new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
