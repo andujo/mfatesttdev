@@ -49,9 +49,7 @@ namespace DatingApp.API.Controllers
         { 
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
-
-            var tfa = new TwoFactorAuthNet.TwoFactorAuth();
-            if (tfa.VerifyCode(Base32.Encode(Encoding.UTF8.GetBytes(userForLoginDto.UserName)), userForLoginDto.MfaCode))
+            if (VerifyMFACode(userForLoginDto.UserName, userForLoginDto.MfaCode))
             {
                 var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
                 if (userFromRepo == null)
@@ -89,6 +87,12 @@ namespace DatingApp.API.Controllers
             } 
             else
                 return BadRequest("MFA code is invalid");
+        }
+
+        public bool VerifyMFACode(string userName, string mfaCode)
+        {
+            var tfa = new TwoFactorAuthNet.TwoFactorAuth();
+            return tfa.VerifyCode(Base32.Encode(Encoding.UTF8.GetBytes(userName)), mfaCode);
         }
     }
 }
