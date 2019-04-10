@@ -33,6 +33,7 @@ import { ModalMFAComponent } from './modal-mfa/modal-mfa.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { from } from 'rxjs';
 
+
 export function tokenGetter() {
     return localStorage.getItem('token');
 }

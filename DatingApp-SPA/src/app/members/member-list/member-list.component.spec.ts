@@ -1,9 +1,10 @@
-/* tslint:disable:no-unused-variable */
+/* tslint:disable:no-unused-variable 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { MemberListComponent } from './member-list.component';
+import { MemberCardComponent } from '../member-card/member-card.component';
 
 describe('MemberListComponent', () => {
   let component: MemberListComponent;
@@ -11,7 +12,7 @@ describe('MemberListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MemberListComponent ]
+      declarations: [ MemberListComponent, MemberCardComponent ]
     })
     .compileComponents();
   }));
@@ -26,3 +27,4 @@ describe('MemberListComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+*/

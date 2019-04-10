@@ -6,7 +6,8 @@ import { encode } from 'hi-base32';
 @Component({
   selector: 'app-modal-mfa',
   templateUrl: './modal-mfa.component.html',
-    styleUrls: ['./modal-mfa.component.css']
+    styleUrls: ['./modal-mfa.component.css'],
+  providers: [BsModalRef]
 })
 export class ModalMFAComponent implements OnInit {
   model: any = {};
@@ -14,9 +15,11 @@ export class ModalMFAComponent implements OnInit {
   public usrQrCode: string = null;
   title: string;
   closeBtnName: string;
-  userName: string;
+  public userName: string;
 
-  constructor(private bsModalRef: BsModalRef) {}
+  constructor(public bsModalRef: BsModalRef) {
+    this.userName = 'Default';
+  }
 
   ngOnInit() {
     this.onClose = new Subject();
@@ -26,6 +29,7 @@ export class ModalMFAComponent implements OnInit {
   public login(): void {
     this.onClose.next(this.model.mfacode);
     this.bsModalRef.hide();
+
 }
 
   public cancel(): void {

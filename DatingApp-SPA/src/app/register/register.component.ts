@@ -8,7 +8,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  templateUrl: './register.component.html',
+  //templateUrl: './register.component.html',
+  template: ``,
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
@@ -57,7 +58,7 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.user = Object.assign({}, this.registerForm.value);
       this.authService.register(this.user).subscribe(() => {
-        this.alertify.sueccess('Registration successful');
+        this.alertify.success('Registration successful');
       }, error => {
         this.alertify.error(error);
       }, () => {
