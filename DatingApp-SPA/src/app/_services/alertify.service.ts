@@ -17,7 +17,7 @@ confirm(message: string, okCallback: () => any) {
   });
 }
 
-sueccess(message: string) {
+success(message: string) {
   alertify.success(message);
 }
 

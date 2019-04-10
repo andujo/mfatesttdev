@@ -8,8 +8,9 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-    styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css']
 })
+
 export class NavComponent implements OnInit {
 model: any = {};
 photoUrl: string;
@@ -24,7 +25,6 @@ bsModalRef: BsModalRef;
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
-
   login() {
     const initialState = {
     userName : this.model.username,
@@ -32,10 +32,11 @@ bsModalRef: BsModalRef;
     };
     this.bsModalRef  = this.modalService.show(ModalMFAComponent, {initialState});
     this.bsModalRef .content.closeBtnName = 'Close';
+
     this.bsModalRef.content.onClose.subscribe((result: string) => {
       this.model.mfacode = result;
       this.authService.login(this.model).subscribe(next => {
-        this.alertify.sueccess('Logged in Successfully');
+        this.alertify.success('Logged in Successfully');
       }, error => {
         this.alertify.error(error);
       }, () => {

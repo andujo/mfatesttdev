@@ -35,8 +35,8 @@
     "ngx-gallery": "^5.3.2",
     "otplib": "^11.0.0",
     "qrcode-generator": "^1.4.3",
-    "rxjs": "^6.0.0",
-    "rxjs-compat": "^6.2.2",
+    "rxjs": "6.0.0",
+    "rxjs-compat": "6.2.2",
     "tslint-sonarts": "^1.9.0",
     "zone.js": "^0.8.26"
   },
