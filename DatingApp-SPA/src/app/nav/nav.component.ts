@@ -34,14 +34,19 @@ bsModalRef: BsModalRef;
     this.bsModalRef .content.closeBtnName = 'Close';
 
     this.bsModalRef.content.onClose.subscribe((result: string) => {
-      this.model.mfacode = result;
-      this.authService.login(this.model).subscribe(next => {
-        this.alertify.success('Logged in Successfully');
-      }, error => {
-        this.alertify.error(error);
-      }, () => {
-        this.router.navigate(['/members']);
-      });
+      if (!result) {
+        this.alertify.error('MFA Code is required');
+      } else {
+        this.model.mfacode = result;
+        this.authService.login(this.model).subscribe(next => {
+          this.alertify.success('Logged in Successfully');
+        }, error => {
+          this.alertify.error(error);
+        }, () => {
+          this.router.navigate(['/members']);
+        });
+      }
+      this.bsModalRef.hide();
     });
   }
 

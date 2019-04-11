@@ -13,9 +13,9 @@ export class ModalMFAComponent implements OnInit {
   model: any = {};
   public onClose: Subject<string>;
   public usrQrCode: string = null;
+  public userName: string;
   title: string;
   closeBtnName: string;
-  public userName: string;
 
   constructor(public bsModalRef: BsModalRef) {
     this.userName = 'Default';
@@ -29,8 +29,7 @@ export class ModalMFAComponent implements OnInit {
   public login(): void {
     this.onClose.next(this.model.mfacode);
     this.bsModalRef.hide();
-
-}
+  }
 
   public cancel(): void {
     this.onClose.next(null);
