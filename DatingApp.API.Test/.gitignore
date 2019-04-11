@@ -1,2 +1,4 @@
 bin
 obj
+DatingApp.API.Test.csproj.user
+Properties/launchSettings.json

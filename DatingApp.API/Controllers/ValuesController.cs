@@ -1,24 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using DatingApp.API.DatingApp;
-using Microsoft.EntityFrameworkCore;
+﻿using DatingApp.API.DatingApp;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace DatingApp.API.Controllers
 {
+    /// <summary>
+    /// Values Controller
+    /// </summary>
     [Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
         private readonly DataContext _context;
+        /// <summary>
+        /// Values Controller Constructor
+        /// </summary>
+        /// <param name="context"></param>
         public ValuesController(DataContext context)
         {
             _context = context;
         }
-        // GET api/values
+
+
+        /// <summary>
+        /// GetVaues Method
+        /// </summary>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetVaues()
@@ -27,30 +37,48 @@ namespace DatingApp.API.Controllers
             return Ok(values);
         }
 
+        /// <summary>
+        /// GetValue Method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET api/values/5
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetValue(int id)
         {
-            return Ok(await _context.Values.FirstOrDefaultAsync(x=> x.Id == id));
+            return Ok(await _context.Values.FirstOrDefaultAsync(x => x.Id == id));
         }
 
-        // POST api/values
+        /// <summary>
+        /// Post Method
+        /// </summary>
+        /// <param name="value"></param>
         [HttpPost]
         public void Post([FromBody]string value)
         {
+            throw new NotSupportedException();
         }
 
-        // PUT api/values/5
+        /// <summary>
+        /// Put Method
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
+            throw new NotSupportedException();
         }
 
-        // DELETE api/values/5
+        /// <summary>
+        /// Delete Value
+        /// </summary>
+        /// <param name="id"></param>
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            throw new NotSupportedException();
         }
     }
 }

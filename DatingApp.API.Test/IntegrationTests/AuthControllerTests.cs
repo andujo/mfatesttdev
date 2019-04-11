@@ -59,7 +59,7 @@ namespace DatingApp.API.Test
         }
 
         [Fact]
-        public async Task Login_ReturnsMFAcodeerror_WhenMfaCodeIsInvalid()
+        public async Task Login_ReturnsMFAcodeError_WhenMfaCodeIsInvalid()
         {
             var user = new UserForLoginDto
             {
