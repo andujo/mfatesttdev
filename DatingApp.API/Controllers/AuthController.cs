@@ -2,6 +2,7 @@ using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
+using LoggerService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace DatingApp.API.Controllers
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
+        private readonly ILoggerManager _logger;
 
         /// <summary>
         /// Controller Constructor
@@ -33,11 +35,13 @@ namespace DatingApp.API.Controllers
         /// <param name="repo"></param>
         /// <param name="config"></param>
         /// <param name="mapper"></param>
-        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
+        /// <param name="logger"></param>
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper, ILoggerManager logger)
         {
             _mapper = mapper;
             _config = config;
             _repo = repo;
+            _logger = logger;
         }
 
         /// <summary>
@@ -67,18 +71,27 @@ namespace DatingApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
-            if (await _repo.UserExists(userForRegisterDto.UserName))
-                return BadRequest("UserName already taken");
+            try
+            {
+                throw new Exception("no one can create users here");
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
+                if (await _repo.UserExists(userForRegisterDto.UserName))
+                    return BadRequest("UserName already taken");
 
-            var userToCreate = _mapper.Map<User>(userForRegisterDto);
+                var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
-            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+                var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
 
-            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
-            return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id },
-            userToReturn);
+                var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+                return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id },
+                userToReturn);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         /// <summary>
@@ -106,46 +119,58 @@ namespace DatingApp.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromBody]UserForLoginDto userForLoginDto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            if (VerifyMFACode(userForLoginDto.UserName, userForLoginDto.MfaCode))
+            try
             {
-                var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
-                if (userFromRepo == null)
-                    return Unauthorized();
+                if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                //build token, it will contains user name
-                var claims = new[]
+                _logger.LogInfo("Login method, model is OK");
+
+                if (VerifyMFACode(userForLoginDto.UserName, userForLoginDto.MfaCode))
                 {
+                    _logger.LogInfo("Login method, mfa code is OK");
+                    var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
+                    if (userFromRepo == null)
+                        return Unauthorized();
+
+                    _logger.LogInfo("user exists");
+                    //build token, it will contains user name
+                    var claims = new[]
+                    {
                         new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
                         new Claim(ClaimTypes.Name, userFromRepo.UserName)
-                };
+                    };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(_config.GetSection("AppSettings:Token").Value));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8
+                    .GetBytes(_config.GetSection("AppSettings:Token").Value));
 
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.Now.AddDays(1),
-                    SigningCredentials = creds
-                };
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.Now.AddDays(1),
+                        SigningCredentials = creds
+                    };
 
-                var tokenHandler = new JwtSecurityTokenHandler();
+                    var tokenHandler = new JwtSecurityTokenHandler();
 
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var user = _mapper.Map<UserForListDto>(userFromRepo);
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    var user = _mapper.Map<UserForListDto>(userFromRepo);
 
-                return Ok(new
-                {
-                    token = tokenHandler.WriteToken(token),
-                    user
-                });
+                    return Ok(new
+                    {
+                        token = tokenHandler.WriteToken(token),
+                        user
+                    });
+                }
+                else
+                    return BadRequest("MFA code is invalid");
             }
-            else
-                return BadRequest("MFA code is invalid");
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong: {ex}");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         private bool VerifyMFACode(string userName, string mfaCode)

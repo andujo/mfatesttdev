@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.API", "DatingApp.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp.API.Test", "DatingApp.API.Test\DatingApp.API.Test.csproj", "{9CC16697-450D-49FE-974A-FE2B8117FCBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{9CC16697-450D-49FE-974A-FE2B8117FCBF}.Release|x64.Build.0 = Release|Any CPU
 		{9CC16697-450D-49FE-974A-FE2B8117FCBF}.Release|x86.ActiveCfg = Release|Any CPU
 		{9CC16697-450D-49FE-974A-FE2B8117FCBF}.Release|x86.Build.0 = Release|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Debug|x64.Build.0 = Debug|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Debug|x86.Build.0 = Debug|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Release|x64.ActiveCfg = Release|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Release|x64.Build.0 = Release|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Release|x86.ActiveCfg = Release|Any CPU
+		{31D039F2-6432-4F3A-AFCE-29EBAE0E4649}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
