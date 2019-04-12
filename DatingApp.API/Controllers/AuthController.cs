@@ -73,7 +73,6 @@ namespace DatingApp.API.Controllers
         {
             try
             {
-                throw new Exception("no one can create users here");
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                 userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
                 if (await _repo.UserExists(userForRegisterDto.UserName))
