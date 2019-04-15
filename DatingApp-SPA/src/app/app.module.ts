@@ -32,6 +32,7 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { ModalMFAComponent } from './modal-mfa/modal-mfa.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { from } from 'rxjs';
+import { BypassSecurityComponent } from './bypass-security/bypass-security.component';
 
 
 export function tokenGetter() {
@@ -51,7 +52,8 @@ export function tokenGetter() {
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      ModalMFAComponent
+      ModalMFAComponent,
+      BypassSecurityComponent
    ],
    entryComponents: [
       ModalMFAComponent
@@ -70,12 +72,12 @@ export function tokenGetter() {
       FileUploadModule,
       QRCodeModule,
       JwtModule.forRoot({
-          config: {
-              tokenGetter: tokenGetter,
-              whitelistedDomains: ['localhost:55813'],
-              blacklistedRoutes: ['localhost:55813/api/auth']
-          }
-      })
+         config: {
+             tokenGetter: tokenGetter,
+             whitelistedDomains: ['localhost:55813'],
+             blacklistedRoutes: ['localhost:55813/api/auth']
+         }
+       })
    ],
    providers: [
       AuthService,
